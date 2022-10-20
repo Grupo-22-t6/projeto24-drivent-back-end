@@ -36,6 +36,10 @@ model Event {
   logoImageUrl       String   @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
+  isPresential       Boolean  @default(true)
+  isOnline           Boolean  @default(false) 
+  presentialPrice    Int      @default(0)
+  onlinePrice        Int      @default(0)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
