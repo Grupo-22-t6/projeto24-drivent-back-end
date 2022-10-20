@@ -42,6 +42,7 @@ model Event {
   onlinePrice        Int      @default(0)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  Payment            Payment[]
 }
 
 model Enrollment {
@@ -70,4 +71,18 @@ model Address {
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+}
+
+model Payment {
+id                 Int      @id @default(autoincrement())
+isPresential       Boolean  @default(true)
+isOnline           Boolean  @default(false)
+paymentValue       Int 
+cardNumber         String
+cardName           String
+expirationDate     String       
+securityCode       String
+createdAt          DateTime @default(now())
+Event              Event    @relation(fields: [eventId], references: [id])
+eventId            Int 
 }
