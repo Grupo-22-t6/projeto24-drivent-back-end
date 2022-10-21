@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN     "isOnline" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "isPresential" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "onlinePrice" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "presentialPrice" INTEGER NOT NULL DEFAULT 0;
