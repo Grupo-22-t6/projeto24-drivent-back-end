@@ -43,6 +43,7 @@ model Event {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   Payment            Payment[]
+  Hotel              Hotel[]
 }
 
 model Enrollment {
@@ -74,15 +75,33 @@ model Address {
 }
 
 model Payment {
-id                 Int      @id @default(autoincrement())
-isPresential       Boolean  @default(true)
-isOnline           Boolean  @default(false)
-paymentValue       Int 
-cardNumber         String
-cardName           String
-expirationDate     String       
-securityCode       String
-createdAt          DateTime @default(now())
-Event              Event    @relation(fields: [eventId], references: [id])
-eventId            Int 
+  id                 Int      @id @default(autoincrement())
+  isPresential       Boolean  @default(true)
+  isOnline           Boolean  @default(false)
+  paymentValue       Int 
+  cardNumber         String
+  cardName           String
+  expirationDate     String       
+  securityCode       String
+  createdAt          DateTime @default(now())
+  Event              Event    @relation(fields: [eventId], references: [id])
+  eventId            Int 
+}
+
+model Hotel {
+  id                  Int                   @id @default(autoincrement())
+  eventId             Int
+  Event               Event                 @relation(fields: [eventId], references: [id])
+  name                String                @db.VarChar(255)
+  imageUrl            String 
+  accommodationsTypes accommodationsTypes   @default(Single)
+  availableVacancies  Int
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+enum  accommodationsTypes {
+  Single
+  Double
+  Triple
 }
