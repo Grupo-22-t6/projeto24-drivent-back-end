@@ -81,7 +81,7 @@ model Payment {
   paymentValue       Int 
   cardNumber         String
   cardName           String
-  expirationDate     String       
+  expirationDate     DateTime        
   securityCode       String
   createdAt          DateTime @default(now())
   Event              Event    @relation(fields: [eventId], references: [id])
