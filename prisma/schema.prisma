@@ -104,6 +104,7 @@ model Room {
   id                  Int                   @id @default(autoincrement())
   number              Int
   hotelId             Int
+  accommodationType  accommodationsTypes   @default(Single)
   Hotel               Hotel                 @relation(fields: [hotelId], references: [id])
   available           Boolean
   createdAt           DateTime              @default(now())
