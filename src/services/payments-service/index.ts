@@ -1,18 +1,30 @@
+import { notFoundError } from '@/errors';
+import eventRepository from '@/repositories/event-repository';
 import paymentRepository from '@/repositories/payment-repository';
 import { Payment } from '@prisma/client';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { creditCardExpired } from './errors';
 
 export type CreatePaymentParams = Omit<Payment, 'id' | 'createdAt' | 'userId'>;
 
 export async function createPayment(paymentData: CreatePaymentParams, userId: number) {
+  const { eventId } = paymentData;
+  const event = await eventRepository.findFirst();
+  if (eventId !== event.id) throw notFoundError();
   const expirationDate = formatDate(paymentData.expirationDate);
   return await paymentRepository.create({ ...paymentData, userId, expirationDate });
 }
 
 function formatDate(date: Date) {
   dayjs.extend(customParseFormat);
-  return dayjs(date, 'MM/YY').toISOString();
+  const dateFormated = dayjs(date, 'MM/YY');
+  if (dayjs().year() <= dateFormated.year()) {
+    if (dayjs().month() <= dateFormated.month()) {
+      return dateFormated.toISOString();
+    }
+  }
+  throw creditCardExpired();
 }
 const paymentService = {
   createPayment,
