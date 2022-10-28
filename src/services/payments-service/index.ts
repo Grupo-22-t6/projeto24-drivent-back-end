@@ -5,6 +5,7 @@ import { Payment } from '@prisma/client';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { creditCardExpired } from './errors';
+import bcrypt from 'bcrypt';
 
 export type CreatePaymentParams = Omit<Payment, 'id' | 'createdAt' | 'userId'>;
 
@@ -12,8 +13,14 @@ export async function createPayment(paymentData: CreatePaymentParams, userId: nu
   const { eventId } = paymentData;
   const event = await eventRepository.findFirst();
   if (eventId !== event.id) throw notFoundError();
-  const expirationDate = formatDate(paymentData.expirationDate);
-  return await paymentRepository.create({ ...paymentData, userId, expirationDate });
+  const formatedExpirationDate = formatDate(paymentData.expirationDate);
+  const hashedSecurityCode = await bcrypt.hash(paymentData.securityCode, 12);
+  return await paymentRepository.create({
+    ...paymentData,
+    userId,
+    expirationDate: formatedExpirationDate,
+    securityCode: hashedSecurityCode,
+  });
 }
 
 function formatDate(date: Date) {
