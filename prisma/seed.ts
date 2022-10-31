@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +23,7 @@ async function main() {
   await prisma.$executeRaw`INSERT INTO "Event"
        (title, "logoImageUrl", "backgroundImageUrl", "isOnline", "isPresential", "onlinePrice", "presentialPrice", "startsAt", "endsAt", "updatedAt")
         VALUES
-        ('Driven.t', 'https://files.driveneducation.com.br/images/logo-rounded.png', 'linear-gradient(to right, #FA4098, #FFD77F)', true, true, 150, 200, '2022-11-11 20:41:12.731' , '2022-12-11 20:41:12.731', '2022-12-11 20:41:12.731');`;
+        ('Driven.t', 'https://files.driveneducation.com.br/images/logo-rounded.png', 'linear-gradient(to right, #FA4098, #FFD77F)', true, true, 150, 200, '2022-10-26 20:41:12.731' , '2022-12-11 20:41:12.731', '2022-12-11 20:41:12.731');`;
   await prisma.$executeRaw`INSERT INTO "Hotel"
     ("eventId", "name", "imageUrl", "accommodationsTypes", "updatedAt")
     VALUES
