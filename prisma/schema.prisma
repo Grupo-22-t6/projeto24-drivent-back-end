@@ -18,7 +18,7 @@ model User {
   updatedAt  DateTime     @updatedAt
   Session    Session[]
   Enrollment Enrollment[]
-  Payments   Payment[] 
+  Payments   Payment[]
 }
 
 model Session {
@@ -31,18 +31,19 @@ model Session {
 }
 
 model Event {
-  id                 Int      @id @default(autoincrement())
-  title              String   @db.VarChar(255)
-  backgroundImageUrl String   @db.VarChar(255)
-  logoImageUrl       String   @db.VarChar(255)
+  id                 Int       @id @default(autoincrement())
+  title              String    @db.VarChar(255)
+  backgroundImageUrl String    @db.VarChar(255)
+  logoImageUrl       String    @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
-  isPresential       Boolean  
-  isOnline           Boolean  
-  presentialPrice    Int      @default(0)
-  onlinePrice        Int      @default(0)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  isPresential       Boolean
+  isOnline           Boolean
+  presentialPrice    Int       @default(0)
+  onlinePrice        Int       @default(0)
+  hotelPrice         Int       @default(350)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
   Payment            Payment[]
   Hotel              Hotel[]
 }
@@ -76,49 +77,42 @@ model Address {
 }
 
 model Payment {
-  id                 Int      @id @default(autoincrement())
-  userId             Int
-  User               User     @relation(fields: [userId], references: [id])
-  isPresential       Boolean  @default(true)
-  isOnline           Boolean  @default(false)
-  paymentValue       Int 
-  cardNumber         String
-  cardName           String
-  expirationDate     DateTime        
-  securityCode       String
-  createdAt          DateTime @default(now())
-  Event              Event    @relation(fields: [eventId], references: [id])
-  eventId            Int 
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  User           User     @relation(fields: [userId], references: [id])
+  isPresential   Boolean  @default(true)
+  isOnline       Boolean  @default(false)
+  paymentValue   Int
+  cardNumber     String
+  cardName       String
+  expirationDate DateTime
+  securityCode   String
+  createdAt      DateTime @default(now())
+  Event          Event    @relation(fields: [eventId], references: [id])
+  eventId        Int
 }
 
 model Hotel {
-  id                  Int                   @id @default(autoincrement())
+  id                  Int      @id @default(autoincrement())
   eventId             Int
-  Event               Event                 @relation(fields: [eventId], references: [id])
-  name                String                @db.VarChar(255)
-  imageUrl            String 
-  accommodationsTypes accommodationsTypes   @default(Single)
+  Event               Event    @relation(fields: [eventId], references: [id])
+  name                String   @db.VarChar(255)
+  imageUrl            String
+  accommodationsTypes Int
   Room                Room[]
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model Room {
-  id                  Int                   @id @default(autoincrement())
-  number              Int
-  hotelId             Int
-  accommodationType  accommodationsTypes   @default(Single)
-  Hotel               Hotel                 @relation(fields: [hotelId], references: [id])
-  available           Boolean
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
+  id                Int      @id @default(autoincrement())
+  number            Int
+  hotelId           Int
+  accommodationType Int
+  Hotel             Hotel    @relation(fields: [hotelId], references: [id])
+  available         Boolean
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@unique([number, hotelId])
-}
-
-
-enum  accommodationsTypes {
-  Single
-  Double
-  Triple
 }
