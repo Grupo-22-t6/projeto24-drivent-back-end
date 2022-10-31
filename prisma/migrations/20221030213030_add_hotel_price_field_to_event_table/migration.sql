@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN     "hotelPrice" INTEGER NOT NULL DEFAULT 350;
