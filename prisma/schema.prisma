@@ -31,21 +31,22 @@ model Session {
 }
 
 model Event {
-  id                 Int       @id @default(autoincrement())
-  title              String    @db.VarChar(255)
-  backgroundImageUrl String    @db.VarChar(255)
-  logoImageUrl       String    @db.VarChar(255)
+  id                 Int        @id @default(autoincrement())
+  title              String     @db.VarChar(255)
+  backgroundImageUrl String     @db.VarChar(255)
+  logoImageUrl       String     @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
   isPresential       Boolean
   isOnline           Boolean
-  presentialPrice    Int       @default(0)
-  onlinePrice        Int       @default(0)
-  hotelPrice         Int       @default(350)
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  presentialPrice    Int        @default(0)
+  onlinePrice        Int        @default(0)
+  hotelPrice         Int        @default(350)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
   Payment            Payment[]
   Hotel              Hotel[]
+  Activity           Activity[]
 }
 
 model Enrollment {
@@ -115,4 +116,18 @@ model Room {
   updatedAt         DateTime @updatedAt
 
   @@unique([number, hotelId])
+}
+
+model Activity {
+  id                  Int      @id @default(autoincrement())
+  eventId             Int
+  Event               Event    @relation(fields: [eventId], references: [id])
+  startsAt            DateTime
+  endsAt              DateTime
+  local               String
+  title               String
+  totalVaccancies     Int
+  remainingVaccancies Int
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
