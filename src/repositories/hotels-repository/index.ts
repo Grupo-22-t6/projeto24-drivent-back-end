@@ -6,11 +6,11 @@ async function getHotels() {
 
 async function getRoomsVacanciesTotalByHotel(hotelId: number) {
   return await prisma.room.aggregate({
-    _count: {
-      accommodationType: true,
-    },
     where: {
       hotelId,
+    },
+    _sum: {
+      accommodationType: true,
     },
   });
 }

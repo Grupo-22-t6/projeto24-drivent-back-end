@@ -1,19 +1,29 @@
 import { notFoundError } from '@/errors';
-import hotelsRepository from '@/repositories/hotels-repository';
+import hotelRepository from '@/repositories/hotels-repository';
 
 async function getHotels() {
-  const hotels = await hotelsRepository.getHotels();
+  const hotels = await hotelRepository.getHotels();
   if (!hotels) throw notFoundError();
-  return hotels;
+  const hotelsFormated = await Promise.all(
+    hotels.map(async (hotel) => {
+      const roomsVacancies = await getRoomsVacanciesByHotel(hotel.id);
+      return {
+        ...hotel,
+        roomsVacancies,
+      };
+    }),
+  );
+  return hotelsFormated;
 }
 
-async function getRoomsVacancies() {
-  return;
+async function getRoomsVacanciesByHotel(hotelId: number) {
+  const vaccanciesTotal = await hotelRepository.getRoomsVacanciesTotalByHotel(hotelId);
+  const reserves = await hotelRepository.getRoomsReservesByHotel(hotelId);
+  return vaccanciesTotal._sum.accommodationType - reserves.length;
 }
 
 const hotelsService = {
   getHotels,
-  getRoomsVacancies,
 };
 
 export default hotelsService;
