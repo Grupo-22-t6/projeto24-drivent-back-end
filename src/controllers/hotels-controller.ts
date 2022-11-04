@@ -13,3 +13,7 @@ export async function getRoomsVacancies(req: Request, res: Response) {
 
   res.status(httpStatus.CREATED).json(rooms);
 }
+
+export async function getRoomsByHotel(req: Request, res: Response) {
+  res.status(httpStatus.OK).json();
+}
