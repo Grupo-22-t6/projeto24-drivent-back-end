@@ -24,15 +24,15 @@ async function getRoomsVacancies() {
   });
 
   //COUNTS
-  let firstRoomVacancies = countFirstRoom.reduce(function (sum, i) {
+  const firstRoomVacancies = countFirstRoom.reduce(function (sum, i) {
     return sum + i;
   });
 
-  let secondRoomVacancies = countSecondRoom.reduce(function (sum, i) {
+  const secondRoomVacancies = countSecondRoom.reduce(function (sum, i) {
     return sum + i;
   });
 
-  let thirdRoomVacancies = countThirdRoom.reduce(function (sum, i) {
+  const thirdRoomVacancies = countThirdRoom.reduce(function (sum, i) {
     return sum + i;
   });
 
