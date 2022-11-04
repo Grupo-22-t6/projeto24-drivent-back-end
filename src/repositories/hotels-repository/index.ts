@@ -51,6 +51,13 @@ async function getRoomsVacancies() {
     thirdHotelRooms,
   };
 }
+async function getRoomsByHotel(hotelId: number) {
+  return await prisma.room.findMany({
+    where: {
+      hotelId,
+    },
+  });
+}
 
 const hotelsRepository = {
   getHotels,
