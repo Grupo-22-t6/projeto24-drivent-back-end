@@ -12,6 +12,14 @@ async function getHotels() {
   });
 }
 
+async function getHotelById(id: number) {
+  return await prisma.hotel.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 async function getRoomsVacanciesTotalByHotel(hotelId: number) {
   return await prisma.room.aggregate({
     where: {
@@ -52,6 +60,7 @@ async function getRoomsByHotel(hotelId: number) {
 
 const hotelsRepository = {
   getHotels,
+  getHotelById,
   getRoomsVacanciesTotalByHotel,
   getRoomsReservesByHotel,
   getRoomsByHotel,
