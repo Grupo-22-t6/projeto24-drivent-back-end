@@ -21,6 +21,8 @@ model User {
   Payments     Payment[]
   UserActivity UserActivity[]
   Reserve      Reserve[]
+
+  @@map("users")
 }
 
 model Session {
@@ -30,6 +32,8 @@ model Session {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("sessions")
 }
 
 model Event {
@@ -49,6 +53,8 @@ model Event {
   Payment            Payment[]
   Hotel              Hotel[]
   Activity           Activity[]
+
+  @@map("events")
 }
 
 model Enrollment {
@@ -62,6 +68,8 @@ model Enrollment {
   Address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@map("enrollments")
 }
 
 model Address {
@@ -77,6 +85,8 @@ model Address {
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+
+  @@map("adresses")
 }
 
 model Payment {
@@ -93,6 +103,8 @@ model Payment {
   createdAt      DateTime @default(now())
   Event          Event    @relation(fields: [eventId], references: [id])
   eventId        Int
+
+  @@map("payments")
 }
 
 model Hotel {
@@ -105,6 +117,8 @@ model Hotel {
   Room                Room[]
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+
+  @@map("hotels")
 }
 
 model Room {
@@ -119,6 +133,7 @@ model Room {
   updatedAt         DateTime  @updatedAt
 
   @@unique([number, hotelId])
+  @@map("rooms")
 }
 
 model Reserve {
@@ -129,6 +144,8 @@ model Reserve {
   User      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("reserves")
 }
 
 model Activity {
@@ -143,6 +160,8 @@ model Activity {
   UserActivity    UserActivity[]
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+
+  @@map("activities")
 }
 
 model UserActivity {
@@ -152,4 +171,6 @@ model UserActivity {
   Activity   Activity @relation(fields: [activityId], references: [id])
   User       User     @relation(fields: [userId], references: [id])
   createdAt  DateTime @default(now())
+
+  @@map("userActivities")
 }
