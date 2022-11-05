@@ -30,6 +30,13 @@ async function getRoomsByHotel(hotelId: number) {
     where: {
       hotelId,
     },
+    include: {
+      Reserve: {
+        select: {
+          id: true,
+        },
+      },
+    },
   });
 }
 
