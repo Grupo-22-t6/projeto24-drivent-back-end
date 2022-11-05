@@ -22,8 +22,15 @@ async function getRoomsVacanciesByHotel(hotelId: number) {
   return vacanciesTotal._sum.accommodationType - reserves.length;
 }
 
+async function getRoomsByHotel(hotelId: number) {
+  const rooms = await hotelRepository.getRoomsByHotel(hotelId);
+  if (!rooms) throw notFoundError();
+  return rooms;
+}
+
 const hotelsService = {
   getHotels,
+  getRoomsByHotel,
 };
 
 export default hotelsService;

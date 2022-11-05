@@ -9,5 +9,7 @@ export async function getHotels(req: Request, res: Response) {
 }
 
 export async function getRoomsByHotel(req: Request, res: Response) {
-  res.status(httpStatus.OK).json();
+  const hotelId = Number(req.params.id);
+  const rooms = await hotelsService.getRoomsByHotel(hotelId);
+  res.status(httpStatus.OK).json(rooms);
 }
