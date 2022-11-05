@@ -4,7 +4,7 @@ import { Router } from 'express';
 
 const hotelsRouter = Router();
 
-///hotelsRouter.all('/*', authenticateToken);
+hotelsRouter.all('/*', authenticateToken);
 
 hotelsRouter.get('/', getHotels);
 hotelsRouter.get('/rooms/:id', getRoomsByHotel);
