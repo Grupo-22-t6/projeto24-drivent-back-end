@@ -5,7 +5,7 @@ async function findWithAddressByUserId(userId: number) {
   return prisma.enrollment.findFirst({
     where: { userId },
     include: {
-      Address: true,
+      address: true,
     },
   });
 }

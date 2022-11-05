@@ -9,11 +9,11 @@ async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddr
 
   if (!enrollmentWithAddress) throw notFoundError();
 
-  const [firstAddress] = enrollmentWithAddress.Address;
+  const [firstAddress] = enrollmentWithAddress.address;
   const address = getFirstAddress(firstAddress);
 
   return {
-    ...exclude(enrollmentWithAddress, 'userId', 'createdAt', 'updatedAt', 'Address'),
+    ...exclude(enrollmentWithAddress, 'userId', 'createdAt', 'updatedAt', 'address'),
     ...(!!address && { address }),
   };
 }

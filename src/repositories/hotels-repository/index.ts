@@ -34,7 +34,7 @@ async function getRoomsVacanciesTotalByHotel(hotelId: number) {
 async function getRoomsReservesByHotel(hotelId: number) {
   return await prisma.reserve.findMany({
     where: {
-      Room: {
+      room: {
         hotelId,
       },
     },
