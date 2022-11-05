@@ -37,21 +37,21 @@ async function main() {
   VALUES
   (1, 'Driven Hospedagems Brabas', 'https://media-cdn.tripadvisor.com/media/photo-s/1b/b1/7f/38/emporio-acapulco-hotel.jpg', 1, '2022-11-11 20:41:12.731' )`;
 
-  for (let i = 0; i < 16; i++) {
+  for (let i = 1; i < 17; i++) {
     const randomNumber = Math.round(Math.random() * 2 + 1);
     await prisma.$executeRaw`INSERT INTO "Room"
     ("number", "hotelId", "accommodationType", "available", "updatedAt")
     VALUES
     (${i}, 1, ${randomNumber}, true, '2022-11-11 20:41:12.731')`;
   }
-  for (let i = 0; i < 16; i++) {
+  for (let i = 1; i < 17; i++) {
     const randomNumber = Math.round(Math.random() * 2 + 1);
     await prisma.$executeRaw`INSERT INTO "Room"
     ("number", "hotelId", "accommodationType", "available", "updatedAt")
     VALUES
     (${i}, 2, ${randomNumber}, true, '2022-11-11 20:41:12.731')`;
   }
-  for (let i = 0; i < 16; i++) {
+  for (let i = 1; i < 17; i++) {
     const randomNumber = Math.round(Math.random() * 2 + 1);
     await prisma.$executeRaw`INSERT INTO "Room"
     ("number", "hotelId", "accommodationType", "available", "updatedAt")
