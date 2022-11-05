@@ -48,6 +48,7 @@ async function getRoomsByHotel(hotelId: number) {
     },
     select: {
       number: true,
+      hotelId: true,
       accommodationType: true,
       reserves: {
         select: {
