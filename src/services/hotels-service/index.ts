@@ -1,47 +1,29 @@
 import { notFoundError } from '@/errors';
-import hotelsRepository from '@/repositories/hotels-repository';
+import hotelRepository from '@/repositories/hotels-repository';
 
 async function getHotels() {
-  const hotels = await hotelsRepository.getHotels();
+  const hotels = await hotelRepository.getHotels();
   if (!hotels) throw notFoundError();
-  return hotels;
+  const hotelsFormated = await Promise.all(
+    hotels.map(async (hotel) => {
+      const roomsVacancies = await getRoomsVacanciesByHotel(hotel.id);
+      return {
+        ...hotel,
+        roomsVacancies,
+      };
+    }),
+  );
+  return hotelsFormated;
 }
 
-async function getRoomsVacancies() {
-  const rooms = await hotelsRepository.getRoomsVacancies();
-  if (!rooms) throw notFoundError();
-
-  const countFirstRoom = rooms.firstHotelRooms.map((rooms, index) => {
-    return rooms._sum.accommodationType;
-  });
-
-  const countSecondRoom = rooms.secondHotelRooms.map((rooms, index) => {
-    return rooms._sum.accommodationType;
-  });
-
-  const countThirdRoom = rooms.thirdHotelRooms.map((rooms, index) => {
-    return rooms._sum.accommodationType;
-  });
-
-  //COUNTS
-  let firstRoomVacancies = countFirstRoom.reduce(function (sum, i) {
-    return sum + i;
-  });
-
-  let secondRoomVacancies = countSecondRoom.reduce(function (sum, i) {
-    return sum + i;
-  });
-
-  let thirdRoomVacancies = countThirdRoom.reduce(function (sum, i) {
-    return sum + i;
-  });
-
-  return [firstRoomVacancies, secondRoomVacancies, thirdRoomVacancies];
+async function getRoomsVacanciesByHotel(hotelId: number) {
+  const vacanciesTotal = await hotelRepository.getRoomsVacanciesTotalByHotel(hotelId);
+  const reserves = await hotelRepository.getRoomsReservesByHotel(hotelId);
+  return vacanciesTotal._sum.accommodationType - reserves.length;
 }
 
 const hotelsService = {
   getHotels,
-  getRoomsVacancies,
 };
 
 export default hotelsService;
