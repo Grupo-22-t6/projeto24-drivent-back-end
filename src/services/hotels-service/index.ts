@@ -1,6 +1,7 @@
+import userRepository from '@/repositories/user-repository';
 import { notFoundError } from '@/errors';
 import hotelRepository from '@/repositories/hotels-repository';
-import { roomIsFull } from './erros';
+import { roomIsFull, userAlreadyReserveRoom } from './erros';
 
 async function getHotels() {
   const hotels = await hotelRepository.getHotels();
@@ -33,6 +34,8 @@ async function reserveRoom(roomId: number, userId: number) {
   const room = await hotelRepository.getRoomById(roomId);
   if (!room) throw notFoundError();
   if (room.accommodationType <= room.reserves.length) throw roomIsFull();
+  const { reserve: userReverse } = await userRepository.findById(userId);
+  if (userReverse.length > 0) throw userAlreadyReserveRoom();
   const reserve = await hotelRepository.createReserve(roomId, userId);
   return reserve;
 }
