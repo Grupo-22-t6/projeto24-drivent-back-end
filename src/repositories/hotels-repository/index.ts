@@ -58,13 +58,21 @@ async function getRoomsByHotel(hotelId: number) {
     },
   });
 }
-
+async function createReserve(roomId: number, userId: number) {
+  return await prisma.reserve.create({
+    data: {
+      roomId,
+      userId,
+    },
+  });
+}
 const hotelsRepository = {
   getHotels,
   getHotelById,
   getRoomsVacanciesTotalByHotel,
   getRoomsReservesByHotel,
   getRoomsByHotel,
+  createReserve,
 };
 
 export default hotelsRepository;
