@@ -13,3 +13,9 @@ export function userAlreadyReserveRoom(): ApplicationError {
     message: 'You already reserve a room!',
   };
 }
+export function roomNotSpecified(): ApplicationError {
+  return {
+    name: 'roomNotSpecified',
+    message: 'Room not specified',
+  };
+}

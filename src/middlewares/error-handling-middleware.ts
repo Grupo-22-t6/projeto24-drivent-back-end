@@ -11,7 +11,8 @@ export function handleApplicationErrors(
   if (
     err.name === 'CannotEnrollBeforeStartDateError' ||
     err.name === 'creditCardExpired' ||
-    err.name === 'roomIsFull'
+    err.name === 'roomIsFull' ||
+    err.name === 'roomNotSpecified'
   ) {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
