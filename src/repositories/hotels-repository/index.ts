@@ -64,6 +64,9 @@ async function getRoomById(id: number) {
     where: {
       id,
     },
+    include: {
+      reserves: true,
+    },
   });
 }
 async function createReserve(roomId: number, userId: number) {

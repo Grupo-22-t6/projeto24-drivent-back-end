@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 export async function getHotels(req: Request, res: Response) {
   const hotels = await hotelsService.getHotels();
 
-  res.status(httpStatus.CREATED).json(hotels);
+  res.status(httpStatus.OK).json(hotels);
 }
 
 export async function getRoomsByHotel(req: Request, res: Response) {
@@ -17,5 +17,7 @@ export async function getRoomsByHotel(req: Request, res: Response) {
 
 export async function reserveRoom(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  res.status(httpStatus.OK).json();
+  const roomId = Number(req.params.id);
+  const reserve = await hotelsService.reserveRoom(roomId, userId);
+  res.status(httpStatus.CREATED).json(reserve);
 }
