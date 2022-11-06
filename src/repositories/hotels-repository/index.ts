@@ -1,60 +1,70 @@
 import { prisma } from '@/config';
 
 async function getHotels() {
-  return await prisma.hotel.findMany();
+  return await prisma.hotel.findMany({
+    select: {
+      id: true,
+      eventId: true,
+      name: true,
+      imageUrl: true,
+      accommodationsTypes: true,
+    },
+  });
 }
 
-async function getRoomsVacancies() {
-  const firstHotelRooms = await prisma.room.groupBy({
-    by: ['accommodationType'],
+async function getHotelById(id: number) {
+  return await prisma.hotel.findUnique({
     where: {
-      hotelId: {
-        equals: 1,
-      },
+      id,
+    },
+  });
+}
+
+async function getRoomsVacanciesTotalByHotel(hotelId: number) {
+  return await prisma.room.aggregate({
+    where: {
+      hotelId,
     },
     _sum: {
       accommodationType: true,
     },
   });
+}
 
-  const secondHotelRooms = await prisma.room.groupBy({
-    by: ['accommodationType'],
-
+async function getRoomsReservesByHotel(hotelId: number) {
+  return await prisma.reserve.findMany({
     where: {
-      hotelId: {
-        equals: 2,
+      room: {
+        hotelId,
       },
     },
-
-    _sum: {
-      accommodationType: true,
-    },
   });
+}
 
-  const thirdHotelRooms = await prisma.room.groupBy({
-    by: ['accommodationType'],
-
+async function getRoomsByHotel(hotelId: number) {
+  return await prisma.room.findMany({
     where: {
-      hotelId: {
-        equals: 3,
+      hotelId,
+    },
+    select: {
+      number: true,
+      hotelId: true,
+      accommodationType: true,
+      reserves: {
+        select: {
+          id: true,
+        },
       },
     },
-
-    _sum: {
-      accommodationType: true,
-    },
   });
-
-  return {
-    firstHotelRooms,
-    secondHotelRooms,
-    thirdHotelRooms,
-  };
 }
 
 const hotelsRepository = {
   getHotels,
-  getRoomsVacancies,
+  getHotelById,
+  getRoomsVacanciesTotalByHotel,
+  getRoomsReservesByHotel,
+  getRoomsByHotel,
 };
 
 export default hotelsRepository;

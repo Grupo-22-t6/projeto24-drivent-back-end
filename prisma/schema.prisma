@@ -11,41 +11,50 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique @db.VarChar(255)
-  password   String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Session    Session[]
-  Enrollment Enrollment[]
-  Payments   Payment[]
+  id             Int            @id @default(autoincrement())
+  email          String         @unique @db.VarChar(255)
+  password       String         @db.VarChar(255)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  session        Session[]
+  enrollment     Enrollment[]
+  payments       Payment[]
+  userActivities UserActivity[]
+  reserve        Reserve[]
+
+  @@map("users")
 }
 
 model Session {
   id        Int      @id @default(autoincrement())
   userId    Int
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("sessions")
 }
 
 model Event {
-  id                 Int       @id @default(autoincrement())
-  title              String    @db.VarChar(255)
-  backgroundImageUrl String    @db.VarChar(255)
-  logoImageUrl       String    @db.VarChar(255)
+  id                 Int        @id @default(autoincrement())
+  title              String     @db.VarChar(255)
+  backgroundImageUrl String     @db.VarChar(255)
+  logoImageUrl       String     @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
   isPresential       Boolean
   isOnline           Boolean
-  presentialPrice    Int       @default(0)
-  onlinePrice        Int       @default(0)
-  hotelPrice         Int       @default(350)
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  Payment            Payment[]
-  Hotel              Hotel[]
+  presentialPrice    Int        @default(0)
+  onlinePrice        Int        @default(0)
+  hotelPrice         Int        @default(350)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  payments           Payment[]
+  hotels             Hotel[]
+  activities         Activity[]
+
+  @@map("events")
 }
 
 model Enrollment {
@@ -55,10 +64,12 @@ model Enrollment {
   birthday  DateTime
   phone     String    @db.VarChar(255)
   userId    Int       @unique
-  User      User      @relation(fields: [userId], references: [id])
-  Address   Address[]
+  user      User      @relation(fields: [userId], references: [id])
+  address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@map("enrollments")
 }
 
 model Address {
@@ -71,15 +82,17 @@ model Address {
   neighborhood  String     @db.VarChar(255)
   addressDetail String?    @db.VarChar(255)
   enrollmentId  Int        @unique
-  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+
+  @@map("adresses")
 }
 
 model Payment {
   id             Int      @id @default(autoincrement())
   userId         Int
-  User           User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
   isPresential   Boolean  @default(true)
   isOnline       Boolean  @default(false)
   paymentValue   Int
@@ -88,31 +101,76 @@ model Payment {
   expirationDate DateTime
   securityCode   String
   createdAt      DateTime @default(now())
-  Event          Event    @relation(fields: [eventId], references: [id])
+  event          Event    @relation(fields: [eventId], references: [id])
   eventId        Int
+
+  @@map("payments")
 }
 
 model Hotel {
   id                  Int      @id @default(autoincrement())
   eventId             Int
-  Event               Event    @relation(fields: [eventId], references: [id])
+  event               Event    @relation(fields: [eventId], references: [id])
   name                String   @db.VarChar(255)
   imageUrl            String
   accommodationsTypes Int
-  Room                Room[]
+  rooms               Room[]
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+
+  @@map("hotels")
 }
 
 model Room {
-  id                Int      @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   number            Int
   hotelId           Int
   accommodationType Int
-  Hotel             Hotel    @relation(fields: [hotelId], references: [id])
+  hotel             Hotel     @relation(fields: [hotelId], references: [id])
   available         Boolean
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  reserves          Reserve[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@unique([number, hotelId])
+  @@map("rooms")
+}
+
+model Reserve {
+  id        Int      @id @default(autoincrement())
+  roomId    Int
+  room      Room     @relation(fields: [roomId], references: [id])
+  userId    Int      @unique
+  User      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reserves")
+}
+
+model Activity {
+  id              Int            @id @default(autoincrement())
+  eventId         Int
+  event           Event          @relation(fields: [eventId], references: [id])
+  startsAt        DateTime
+  endsAt          DateTime
+  local           String
+  title           String
+  totalVaccancies Int
+  userActivities  UserActivity[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("activities")
+}
+
+model UserActivity {
+  id         Int      @id @default(autoincrement())
+  activityId Int
+  userId     Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@map("userActivities")
 }

@@ -8,7 +8,7 @@ async function upsert(enrollmentId: number, createdAddress: CreateAddressParams,
     },
     create: {
       ...createdAddress,
-      Enrollment: { connect: { id: enrollmentId } },
+      enrollment: { connect: { id: enrollmentId } },
     },
     update: updatedAddress,
   });
