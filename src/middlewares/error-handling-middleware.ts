@@ -8,13 +8,18 @@ export function handleApplicationErrors(
   res: Response,
   _next: NextFunction,
 ) {
-  if (err.name === 'CannotEnrollBeforeStartDateError' || err.name === 'creditCardExpired') {
+  if (
+    err.name === 'CannotEnrollBeforeStartDateError' ||
+    err.name === 'creditCardExpired' ||
+    err.name === 'roomIsFull' ||
+    err.name === 'roomNotSpecified'
+  ) {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
     });
   }
 
-  if (err.name === 'ConflictError' || err.name === 'DuplicatedEmailError') {
+  if (err.name === 'ConflictError' || err.name === 'DuplicatedEmailError' || err.name === 'userAlreadyReserveRoom') {
     return res.status(httpStatus.CONFLICT).send({
       message: err.message,
     });
