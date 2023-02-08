@@ -9,3 +9,8 @@ export async function paymentPost(req: AuthenticatedRequest, res: Response) {
   const payment = await paymentService.createPayment(req.body, userId);
   res.status(httpStatus.CREATED).json(payment);
 }
+
+export async function paymentVerification(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  res.status(httpStatus.OK).json();
+}
