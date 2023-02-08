@@ -12,6 +12,11 @@ async function getByUserId(userId: number) {
     where: {
       userId,
     },
+    select: {
+      isPresential: true,
+      withHotel: true,
+      paymentValue: true,
+    },
   });
 }
 

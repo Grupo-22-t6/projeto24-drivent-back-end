@@ -7,6 +7,6 @@ const paymentsRouter = Router();
 
 paymentsRouter.all('/*', authenticateToken);
 paymentsRouter.post('/', validateBody(createPaymentSchema), paymentPost);
-paymentsRouter.get('/:id', paymentVerification);
+paymentsRouter.get('/', paymentVerification);
 
 export { paymentsRouter };
