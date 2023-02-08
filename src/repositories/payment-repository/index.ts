@@ -7,8 +7,17 @@ async function create(data: Prisma.PaymentUncheckedCreateInput) {
   });
 }
 
+async function getByUserId(userId: number) {
+  return await prisma.payment.findFirst({
+    where: {
+      userId,
+    },
+  });
+}
+
 const paymentRepository = {
   create,
+  getByUserId,
 };
 
 export default paymentRepository;

@@ -23,6 +23,12 @@ export async function createPayment(paymentData: CreatePaymentParams, userId: nu
   });
 }
 
+export async function verifyPaymentIsDone(userId: number) {
+  const payment = await paymentRepository.getByUserId(userId);
+  if (!payment) throw notFoundError();
+  return;
+}
+
 function formatDate(date: Date) {
   dayjs.extend(customParseFormat);
   const dateFormated = dayjs(date, 'MM/YY');
@@ -35,6 +41,7 @@ function formatDate(date: Date) {
 }
 const paymentService = {
   createPayment,
+  verifyPaymentIsDone,
 };
 
 export default paymentService;
