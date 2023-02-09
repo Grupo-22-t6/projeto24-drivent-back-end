@@ -91,10 +91,10 @@ model Address {
 
 model Payment {
   id             Int      @id @default(autoincrement())
-  userId         Int
+  userId         Int      @unique
   user           User     @relation(fields: [userId], references: [id])
-  isPresential   Boolean  @default(true)
-  isOnline       Boolean  @default(false)
+  isPresential   Boolean
+  withHotel      Boolean
   paymentValue   Int
   cardNumber     String
   cardName       String

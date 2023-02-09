@@ -3,7 +3,7 @@ import Joi from 'joi';
 
 export const createPaymentSchema = Joi.object<CreatePaymentParams>({
   isPresential: Joi.boolean().required(),
-  isOnline: Joi.boolean().required(),
+  withHotel: Joi.boolean().required(),
   paymentValue: Joi.number().required(),
   cardNumber: Joi.string().min(16).max(19).required(),
   cardName: Joi.string().required(),

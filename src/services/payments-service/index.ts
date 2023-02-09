@@ -1,4 +1,4 @@
-import { notFoundError } from '@/errors';
+import { notFoundError, conflictError } from '@/errors';
 import eventRepository from '@/repositories/event-repository';
 import paymentRepository from '@/repositories/payment-repository';
 import { Payment } from '@prisma/client';
@@ -13,6 +13,8 @@ export async function createPayment(paymentData: CreatePaymentParams, userId: nu
   const { eventId } = paymentData;
   const event = await eventRepository.findFirst();
   if (eventId !== event.id) throw notFoundError();
+  const paymentAlreadyExists = await paymentRepository.getByUserId(userId);
+  if (paymentAlreadyExists) return conflictError('Esse usuario já efetuou o pagamento');
   const formatedExpirationDate = formatDate(paymentData.expirationDate);
   const hashedSecurityCode = await bcrypt.hash(paymentData.securityCode, 12);
   return await paymentRepository.create({
@@ -21,6 +23,12 @@ export async function createPayment(paymentData: CreatePaymentParams, userId: nu
     expirationDate: formatedExpirationDate,
     securityCode: hashedSecurityCode,
   });
+}
+
+export async function verifyPaymentIsDone(userId: number) {
+  const payment = await paymentRepository.getByUserId(userId);
+  if (!payment) throw notFoundError();
+  return payment;
 }
 
 function formatDate(date: Date) {
@@ -35,6 +43,7 @@ function formatDate(date: Date) {
 }
 const paymentService = {
   createPayment,
+  verifyPaymentIsDone,
 };
 
 export default paymentService;
