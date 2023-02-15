@@ -79,7 +79,7 @@ async function createReserve(roomId: number, userId: number) {
   });
 }
 
-async function getReserveById(userId: number) {
+async function getReserveByUserId(userId: number) {
   return await prisma.reserve.findFirst({
     where: {
       userId,
@@ -94,7 +94,7 @@ const hotelsRepository = {
   getRoomsByHotel,
   getRoomById,
   createReserve,
-  getReserveById,
+  getReserveByUserId,
 };
 
 export default hotelsRepository;
