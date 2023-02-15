@@ -25,7 +25,7 @@ export async function createPayment(paymentData: CreatePaymentParams, userId: nu
   });
 }
 
-export async function verifyPaymentIsDone(userId: number) {
+export async function getPaymentByUser(userId: number) {
   const payment = await paymentRepository.getByUserId(userId);
   if (!payment) throw notFoundError();
   return payment;
@@ -43,7 +43,7 @@ function formatDate(date: Date) {
 }
 const paymentService = {
   createPayment,
-  verifyPaymentIsDone,
+  getPaymentByUser,
 };
 
 export default paymentService;

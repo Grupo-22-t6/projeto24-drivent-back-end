@@ -12,6 +12,6 @@ export async function paymentPost(req: AuthenticatedRequest, res: Response) {
 
 export async function paymentVerification(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  const payment = await paymentService.verifyPaymentIsDone(userId);
+  const payment = await paymentService.getPaymentByUser(userId);
   res.status(httpStatus.OK).json(payment);
 }
