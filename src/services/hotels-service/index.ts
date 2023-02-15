@@ -41,10 +41,19 @@ async function reserveRoom(roomId: number, userId: number) {
   return reserve;
 }
 
+async function getReserve(userId: number) {
+  const reserve = await hotelRepository.getReserveByUserId(userId);
+  if (!reserve) throw notFoundError();
+  const { hotelId, number, accommodationType, reserves } = await hotelRepository.getRoomById(reserve.roomId);
+
+  return { hotelId, number, accommodationType, reserves: reserves.length };
+}
+
 const hotelsService = {
   getHotels,
   getRoomsByHotel,
   reserveRoom,
+  getReserve,
 };
 
 export default hotelsService;

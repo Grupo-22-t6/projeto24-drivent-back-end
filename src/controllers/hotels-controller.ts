@@ -24,5 +24,6 @@ export async function reserveRoom(req: AuthenticatedRequest, res: Response) {
 
 export async function reserveVerification(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  res.status(httpStatus.OK).json();
+  const reserve = await hotelsService.getReserve(userId);
+  res.status(httpStatus.OK).json(reserve);
 }
