@@ -46,7 +46,7 @@ async function getReserve(userId: number) {
   if (!reserve) throw notFoundError();
   const { hotelId, number, accommodationType, reserves } = await hotelRepository.getRoomById(reserve.roomId);
 
-  return { hotelId, number, accommodationType, reserves: reserves.length };
+  return { hotelId, number, accommodationType, roommates: reserves.length };
 }
 
 const hotelsService = {
