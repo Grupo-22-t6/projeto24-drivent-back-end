@@ -36,15 +36,24 @@ async function reserveRoom(roomId: number, userId: number) {
   if (!room) throw notFoundError();
   if (room.accommodationType <= room.reserves.length) throw roomIsFull();
   const { reserve: userReverse } = await userRepository.findById(userId);
-  if (userReverse.length > 0) throw userAlreadyReserveRoom();
-  const reserve = await hotelRepository.createReserve(roomId, userId);
+  //if (userReverse.length > 0) throw userAlreadyReserveRoom();
+  const reserve = await hotelRepository.upsertReserve(roomId, userId);
   return reserve;
+}
+
+async function getReserve(userId: number) {
+  const reserve = await hotelRepository.getReserveByUserId(userId);
+  if (!reserve) throw notFoundError();
+  const { hotelId, number, accommodationType, reserves } = await hotelRepository.getRoomById(reserve.roomId);
+
+  return { hotelId, number, accommodationType, roommates: reserves.length };
 }
 
 const hotelsService = {
   getHotels,
   getRoomsByHotel,
   reserveRoom,
+  getReserve,
 };
 
 export default hotelsService;
