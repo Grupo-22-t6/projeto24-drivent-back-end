@@ -27,3 +27,8 @@ export async function reserveVerification(req: AuthenticatedRequest, res: Respon
   const reserve = await hotelsService.getReserve(userId);
   res.status(httpStatus.OK).json(reserve);
 }
+
+export async function updateReserve(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  res.status(httpStatus.OK);
+}

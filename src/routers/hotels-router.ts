@@ -10,5 +10,6 @@ hotelsRouter.get('/', getHotels);
 hotelsRouter.get('/rooms/:id', getRoomsByHotel);
 hotelsRouter.post('/room/:id', reserveRoom);
 hotelsRouter.get('/reserve', reserveVerification);
+hotelsRouter.put('/room/:id');
 
 export { hotelsRouter };
