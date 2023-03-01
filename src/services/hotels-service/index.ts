@@ -36,8 +36,8 @@ async function reserveRoom(roomId: number, userId: number) {
   if (!room) throw notFoundError();
   if (room.accommodationType <= room.reserves.length) throw roomIsFull();
   const { reserve: userReverse } = await userRepository.findById(userId);
-  if (userReverse.length > 0) throw userAlreadyReserveRoom();
-  const reserve = await hotelRepository.createReserve(roomId, userId);
+  //if (userReverse.length > 0) throw userAlreadyReserveRoom();
+  const reserve = await hotelRepository.upsertReserve(roomId, userId);
   return reserve;
 }
 
