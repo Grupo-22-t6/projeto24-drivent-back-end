@@ -86,6 +86,21 @@ async function getReserveByUserId(userId: number) {
     },
   });
 }
+
+async function updateReserve(userId: number, roomId: number) {
+  return await prisma.reserve.upsert({
+    where: {
+      userId,
+    },
+    create: {
+      roomId,
+      userId,
+    },
+    update: {
+      roomId,
+    },
+  });
+}
 const hotelsRepository = {
   getHotels,
   getHotelById,
@@ -95,6 +110,7 @@ const hotelsRepository = {
   getRoomById,
   createReserve,
   getReserveByUserId,
+  updateReserve,
 };
 
 export default hotelsRepository;
